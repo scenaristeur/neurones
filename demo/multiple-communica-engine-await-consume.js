@@ -1,18 +1,20 @@
 #!/usr/bin/env node
 const newEngine = require('@comunica/actor-init-sparql').newEngine;
 const myEngine = newEngine();
+var cpt = 0;
 
 (async function main() {
+
   const result = await myEngine.query(`
     SELECT ?s ?p ?o WHERE {
       ?s ?p ?o
     } LIMIT 100`, {
       sources: [
         //  'https://fragments.dbpedia.org/2016-04/en',
-        //  'https://www.rubensworks.net',
-        //  'https://ruben.verborgh.org/profile/',
-        "https://spoggy-test5.solidcommunity.net/",
-        "https://spoggy-test4.solidcommunity.net/profile/card#me"
+         'https://www.rubensworks.net',
+         'https://ruben.verborgh.org/profile/',
+        'https://spoggy-test5.solidcommunity.net/',
+        'https://spoggy-test4.solidcommunity.net/profile/card#me'
       ],
     })
     result.bindingsStream.on('data', (binding) => {
@@ -41,7 +43,8 @@ const myEngine = newEngine();
   })();
 
   function runSomething(b){
-    console.log("\n  running something on ", b.get('?s').value)
+    console.log("\n ",cpt," running something on ", b.get('?s').value)
     console.log(JSON.stringify(b.entries()))
     console.log(JSON.stringify(b))
+    cpt ++
   }
